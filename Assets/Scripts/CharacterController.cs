@@ -42,9 +42,9 @@ public class CharacterController : MonoBehaviour
         rb.MovePosition(rb.position +  _inputVector * MovementSpeed * Time.fixedDeltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Damage"))
+        if (collision.collider.CompareTag("Damage"))
             TakeDamage(1);      
     }
 

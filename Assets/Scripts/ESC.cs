@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class ESC : MonoBehaviour
 {
-    public GameObject pausePanel;
+    public GameObject PausePanel;
 
     void Start()
     {
-        pausePanel.SetActive(false);
+        PausePanel.SetActive(false);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bool isPaused = pausePanel.activeSelf;
+            bool isPaused = PausePanel.activeSelf;
 
             Time.timeScale = isPaused ? 1f : 0f;
-            pausePanel.SetActive(!isPaused);
+            PausePanel.SetActive(!isPaused);
         }
     }
 }
