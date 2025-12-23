@@ -45,7 +45,9 @@ public class CharacterController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Damage"))
-            TakeDamage(1);      
+            TakeDamage(1);
+        else if (collision.collider.CompareTag("Hill"))
+            PlusHP(1);
     }
 
     void TakeDamage(int damage)
@@ -55,6 +57,14 @@ public class CharacterController : MonoBehaviour
 
         if (_currentHealth <= 0)
             GameOver();
+    }
+
+    void PlusHP(int damage)
+    {
+        _currentHealth += damage;
+        if (_currentHealth < MaxHealth)
+            _currentHealth = MaxHealth;
+        UpdateHearts();
     }
 
     void UpdateHearts()

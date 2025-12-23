@@ -11,19 +11,22 @@ public class MovementAnimation : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-            animator.SetTrigger("ForwardTrigger");
+        animator.SetBool("Forward", false);
+        animator.SetBool("Back", false);
+        animator.SetBool("Left", false);
+        animator.SetBool("Right", false);
 
-        else if (Input.GetKeyDown(KeyCode.S))
-            animator.SetTrigger("BackTrigger");
+        if (Input.GetKeyDown(KeyCode.W))   
+            animator.SetBool("Forward", true);
 
-        else if (Input.GetKeyDown(KeyCode.A))
-            animator.SetTrigger("LeftTrigger");
+        else if (Input.GetKeyDown(KeyCode.S)) 
+            animator.SetBool("Back", true);
 
-        else if (Input.GetKeyDown(KeyCode.D))
-            animator.SetTrigger("RightTrigger");
+        else if (Input.GetKeyDown(KeyCode.A)) 
+            animator.SetBool("Left", true);
 
-       else
-            animator.SetTrigger("IdleTrigger");
+        else if (Input.GetKeyDown(KeyCode.D)) 
+            animator.SetBool("Right", true);
     }
+
 }
