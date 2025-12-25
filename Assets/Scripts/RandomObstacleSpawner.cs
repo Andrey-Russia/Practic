@@ -3,60 +3,59 @@ using UnityEngine;
 
 public class RandomObstacleSpawner : MonoBehaviour
 {
-    public GameObject[] ObstaclePrefabs;
-    public Transform RoomTransform;
-    public float ObstacleSpacing = 10;
-    public int ObstaclesCount = 25;
+    public GameObject[] PrefabsToSpawn;
+    public Transform CenterPoint;
+    public int NumberOfObjects = 10;
+    public float MinDistance = 1f;
+    public float MaxDistance = 10f;
+    public float MinSeparationDistance = 2f;
+    public int MaxPlacementAttempts = 100;
 
-    private void Start()
+    List<Vector3> spawnedPositions = new List<Vector3>();
+
+    void Start()
     {
-        SpriteRenderer spriteRenderer = RoomTransform.GetComponent<SpriteRenderer>();
-
-        if (spriteRenderer != null && spriteRenderer.sprite != null)
-        {
-            float roomWight = spriteRenderer.sprite.bounds.size.x;
-            float roomHeight = spriteRenderer.sprite.bounds.size.y;
-
-            SpawnObstacles(roomWight, roomHeight);
-        }
+        SpawnPrefabs();
     }
 
-    private void SpawnObstacles(float roomWight, float roomHeight)
+    private void SpawnPrefabs()
     {
-        List<Vector2> possiblePositions = GeneratePossiblePositions(roomWight, roomHeight);
-        ShuffleList(possiblePositions);
-
-        for (int i = 0; i < Mathf.Min(ObstaclesCount, possiblePositions.Count); i++)
+        for (int i = 0; i < NumberOfObjects; i++)
         {
-            Vector2 positon = possiblePositions[i];
-            int randomPrefabIndex = Random.Range(0, ObstaclePrefabs.Length);
-            Instantiate(ObstaclePrefabs[randomPrefabIndex], positon, Quaternion.identity);
-        }
-    }
-
-    private List<Vector2> GeneratePossiblePositions(float roomWidth, float roomHeight)
-    {
-        List<Vector2> positions = new List<Vector2>();
-
-        for (float x = -roomWidth / 2 + ObstacleSpacing; x <= roomWidth / 2 - ObstacleSpacing; x += ObstacleSpacing * 2)
-        {
-            for (float y = -roomHeight / 2 + ObstacleSpacing; y <= roomHeight / 2 - ObstacleSpacing; y +=ObstacleSpacing * 2)
+            GameObject randomPrefab = PrefabsToSpawn[Random.Range(0, PrefabsToSpawn.Length)];
+            Vector3 position = GetValidPosition();
+            if (position != Vector3.zero)
             {
-                positions.Add(new Vector2(x, y));
+                Instantiate(randomPrefab, position, Quaternion.identity);
+                spawnedPositions.Add(position);
             }
         }
-
-        return positions;
     }
 
-    private void ShuffleList<T>(IList<T> list)
+    private Vector3 GetValidPosition()
     {
-        for (int i = 0; i < list.Count; i++)
+        for (int attempt = 0; attempt < MaxPlacementAttempts; attempt++)
         {
-            int r = Random.Range(i, list.Count);
-            T temp = list[r];
-            list[r] = list[i];
-            list[i] = temp;
+            float angle = Random.Range(0f, 360f);
+            float radius = Random.Range(MinDistance, MaxDistance);
+            Vector3 candidatePosition = new Vector3(
+                CenterPoint.position.x + radius * Mathf.Cos(angle * Mathf.Deg2Rad),
+                CenterPoint.position.y + radius * Mathf.Sin(angle * Mathf.Deg2Rad),
+                -1);
+            if (IsValidPosition(candidatePosition))
+                return candidatePosition;
         }
+        Debug.LogWarning("Could not find a valid position after multiple attempts.");
+        return Vector3.zero;
+    }
+
+    private bool IsValidPosition(Vector3 pos)
+    {
+        foreach (var existingPos in spawnedPositions)
+        {
+            if (Vector3.Distance(pos, existingPos) < MinSeparationDistance)
+                return false;
+        }
+        return true;
     }
 }

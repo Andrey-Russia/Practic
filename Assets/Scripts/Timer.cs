@@ -8,8 +8,10 @@ public class Timer : MonoBehaviour
     public TMP_Text FinalTimeText;
     public GameObject DiePanel;
 
-    private float _timer;
+    public float _timer;
     private bool _isGameOver;
+
+    public CharacterController characterController;
 
     void Start()
     {
@@ -23,15 +25,18 @@ public class Timer : MonoBehaviour
         {
             _timer += Time.deltaTime;
             TimerText.text = FormatTime(_timer);
+
+            if ((characterController._currentHealth <= 0) ||
+               (characterController.FinishReached))
+                GameOver();
         }
     }
 
     public void GameOver()
     {
         _isGameOver = true;
-        TimerText.text = "Final Time: " + TimerText.text;
+        FinalTimeText.text = $"Final Time: {FormatTime(_timer)}";
         DiePanel.SetActive(true);
-        FinalTimeText.text = TimerText.text;
         Time.timeScale = 0f;
     }
 
@@ -39,6 +44,6 @@ public class Timer : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(time / 60);
         int seconds = Mathf.FloorToInt(time % 60);
-        return string.Format("{0:00}:{1:00}", minutes, seconds);
+        return $"{minutes:00}:{seconds:00}";
     }
 }

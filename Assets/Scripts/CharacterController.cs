@@ -11,10 +11,12 @@ public class CharacterController : MonoBehaviour
     public int MaxHealth;
     public Image[] Hearts;
     public GameObject DiePanel;
+    public GameObject FinishPoint;
 
     private Vector2 _inputVector;
     private Rigidbody2D rb;
-    private int _currentHealth;
+    public int _currentHealth;
+    private bool _finishReached = false; 
 
     void Start()
     {
@@ -29,17 +31,15 @@ public class CharacterController : MonoBehaviour
         _inputVector.x = Input.GetAxisRaw("Horizontal");
         _inputVector.y = Input.GetAxisRaw("Vertical");
 
-        if (_inputVector.x != 0 && _inputVector.y != 0)
+        if (_inputVector.x != 0 || _inputVector.y != 0)
         {
-            return;
+            _inputVector.Normalize();
         }
-
-        _inputVector.Normalize();
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position +  _inputVector * MovementSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + _inputVector * MovementSpeed * Time.fixedDeltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -47,7 +47,14 @@ public class CharacterController : MonoBehaviour
         if (collision.collider.CompareTag("Damage"))
             TakeDamage(1);
         else if (collision.collider.CompareTag("Hill"))
-            PlusHP(1);
+            RestoreHealth(1);
+        else if (collision.collider.CompareTag("UltraDamage"))
+            TakeDamage(MaxHealth);
+        else if (collision.collider.CompareTag("Finish"))
+        {
+            _finishReached = true;
+            GameOver();
+        }
     }
 
     void TakeDamage(int damage)
@@ -59,10 +66,10 @@ public class CharacterController : MonoBehaviour
             GameOver();
     }
 
-    void PlusHP(int damage)
+    void RestoreHealth(int amount)
     {
-        _currentHealth += damage;
-        if (_currentHealth < MaxHealth)
+        _currentHealth += amount;
+        if (_currentHealth > MaxHealth)
             _currentHealth = MaxHealth;
         UpdateHearts();
     }
@@ -71,11 +78,7 @@ public class CharacterController : MonoBehaviour
     {
         for (int i = 0; i < Hearts.Length; i++)
         {
-            if (i < _currentHealth)
-                Hearts[i].enabled = true;
-        
-            else
-                Hearts[i].enabled = false;
+            Hearts[i].enabled = (i < _currentHealth);
         }
     }
 
@@ -84,4 +87,6 @@ public class CharacterController : MonoBehaviour
         DiePanel.SetActive(true);
         Time.timeScale = 0f;
     }
+
+    public bool FinishReached => _finishReached;
 }
