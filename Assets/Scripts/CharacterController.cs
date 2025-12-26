@@ -45,15 +45,15 @@ public class CharacterController : MonoBehaviour
         rb.MovePosition(rb.position + _inputVector * MovementSpeed * Time.fixedDeltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.collider.CompareTag("Damage"))
+        if (other.CompareTag("Damage")) 
             TakeDamage(1);
-        else if (collision.collider.CompareTag("Hill"))
+        else if (other.CompareTag("Hill")) 
             RestoreHealth(1);
-        else if (collision.collider.CompareTag("YltraDamage"))
+        else if (other.CompareTag("YltraDamage"))
             TakeDamage(MaxHealth);
-        else if (collision.collider.CompareTag("Finish"))
+        else if (other.CompareTag("Finish")) 
         {
             _finishReached = true;
             GameOver();
