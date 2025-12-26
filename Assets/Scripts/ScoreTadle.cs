@@ -1,19 +1,10 @@
 using UnityEngine;
-using TMPro;
+using YG;
 
 public class ScoreTadle : MonoBehaviour
 {
-    public TMP_Text Score;
-
-    public void Start()
+    private void Start()
     {
-        LoadScore();
-    }
-
-    void LoadScore()
-    {
-        int lastScore = PlayerPrefs.GetInt("last score");
-
-        Score.text = $"Последний рекорд: {lastScore}";
+        YG2.SetLeaderboard("LeaderBoard", 10000);
     }
 }
