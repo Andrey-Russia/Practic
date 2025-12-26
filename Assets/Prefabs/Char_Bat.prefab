@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1190057569962034326}
   - component: {fileID: 4421297399172936882}
   - component: {fileID: 3745815909037147108}
+  - component: {fileID: 2679881510248735750}
   m_Layer: 0
   m_Name: Char_Bat
   m_TagString: Damage
@@ -134,3 +135,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.3125, y: 1.3125}
   m_EdgeRadius: 0
+--- !u!114 &2679881510248735750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8130759433035070586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7ddbbea9ee2e943988b6fc71d64319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

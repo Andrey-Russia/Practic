@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text FinalScore;
     public int MaxScore = 10000;
 
-    private int _currentScore;
+    public int _currentScore;
     private int _initialHp;
     private bool _isGameOver;
 
@@ -40,8 +40,8 @@ public class ScoreManager : MonoBehaviour
     {
         int remainingHealth = CharacterController._currentHealth;
         float elapsedTime = TimerScript._timer;
-        float healthWeight = (float)(remainingHealth) / _initialHp;
-        float timeWeight = 1f / (elapsedTime + 1);
+        float healthWeight = (float)(remainingHealth) / (_initialHp * 2);
+        float timeWeight = 1f / (elapsedTime + 5);
         _currentScore = Mathf.RoundToInt(MaxScore * timeWeight * healthWeight);
         _currentScore = Mathf.Clamp(_currentScore, 0, MaxScore);
     }
@@ -53,6 +53,9 @@ public class ScoreManager : MonoBehaviour
         {
             CalculateScore();
             FinalScore.text = $"Final timer: {_currentScore}";
+
+            PlayerPrefs.SetInt("last score", _currentScore);
+            PlayerPrefs.Save();
         }
     }
 }

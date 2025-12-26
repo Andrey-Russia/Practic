@@ -4,11 +4,11 @@ using UnityEngine;
 public class RandomObstacleSpawner : MonoBehaviour
 {
     public GameObject[] PrefabsToSpawn;
-    public Transform CenterPoint;
-    public int NumberOfObjects = 10;
-    public float MinDistance = 1f;
-    public float MaxDistance = 10f;
-    public float MinSeparationDistance = 2f;
+    public Transform CenterPoint; 
+    public int NumberOfObjects = 10; 
+    public float MinDistance = 1f; 
+    public float MaxDistance = 10f; 
+    public float MinSeparationDistance = 2f; 
     public int MaxPlacementAttempts = 100;
 
     List<Vector3> spawnedPositions = new List<Vector3>();

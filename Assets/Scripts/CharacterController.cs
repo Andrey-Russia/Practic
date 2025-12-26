@@ -24,6 +24,9 @@ public class CharacterController : MonoBehaviour
         _currentHealth = MaxHealth;
         UpdateHearts();
         DiePanel.SetActive(false);
+        _finishReached = false;
+        if (Time.timeScale == 0f)
+            Time.timeScale = 1f;
     }
 
     void Update()
@@ -48,7 +51,7 @@ public class CharacterController : MonoBehaviour
             TakeDamage(1);
         else if (collision.collider.CompareTag("Hill"))
             RestoreHealth(1);
-        else if (collision.collider.CompareTag("UltraDamage"))
+        else if (collision.collider.CompareTag("YltraDamage"))
             TakeDamage(MaxHealth);
         else if (collision.collider.CompareTag("Finish"))
         {
