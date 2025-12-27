@@ -52,9 +52,9 @@ public class ScoreManager : MonoBehaviour
         if (gameOver)
         {
             CalculateScore();
-            FinalScore.text = $"Final timer: {_currentScore}";
+            FinalScore.text = $"Финальное время: {_currentScore}";
 
-            PlayerPrefs.SetInt("last score", _currentScore);
+            PlayerPrefs.SetInt("Финальный счёт:", _currentScore);
             PlayerPrefs.Save();
         }
     }

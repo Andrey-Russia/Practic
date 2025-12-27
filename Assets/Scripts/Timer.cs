@@ -35,7 +35,7 @@ public class Timer : MonoBehaviour
     public void GameOver()
     {
         _isGameOver = true;
-        FinalTimeText.text = $"Final Time: {FormatTime(_timer)}";
+        FinalTimeText.text = $"Финальное время: {FormatTime(_timer)}";
         DiePanel.SetActive(true);
         Time.timeScale = 0f;
     }
